@@ -19,6 +19,7 @@ Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.
 Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create'); 
 Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
 Route::get('/suppliers/{id}', [SupplierController::class, 'show'])->name('suppliers.show');
+Route::resource('suppliers', SupplierController::class);
 
 Route::get('/stock', [StockEntryController::class, 'index'])->name('stock.index');
 Route::post('/stock', [StockEntryController::class, 'store'])->name('stock.store');

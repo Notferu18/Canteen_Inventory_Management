@@ -2,81 +2,80 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="mb-8 flex items-center justify-between">
-        <div>
-            <a href="{{ route('suppliers.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">&larr; Back to Suppliers</a>
-            <h2 class="text-3xl font-bold text-slate-800 mt-2">{{ $supplier->supplier_name }}</h2>
-            <p class="text-slate-500">Supplier Code: <span class="font-mono font-bold">{{ $supplier->supplier_code }}</span></p>
+    <div class="mb-6">
+        <a href="{{ route('suppliers.index') }}" class="inline-flex items-center text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-widest transition-colors">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Suppliers List
+        </a>
+    </div>
+
+    <div class="bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-2xl p-8 mb-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-8 opacity-10">
+            <svg class="w-32 h-32 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+            </svg>
         </div>
-        <div class="flex gap-3">
-            <div class="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
-                <span class="text-xs font-bold text-slate-400 uppercase block">Total Items Supplied</span>
-                <span class="text-xl font-bold text-slate-800">{{ $supplier->products->count() }}</span>
+        
+        <div class="relative z-10">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-slate-900 text-white uppercase tracking-[0.2em] mb-4">
+                Supplier Profile
+            </span>
+            <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">{{ $supplier->supplier_name }}</h2>
+            <div class="mt-4 flex flex-wrap gap-6 text-sm">
+                <div class="flex items-center text-slate-500">
+                    <span class="font-bold text-slate-400 mr-2 uppercase tracking-tighter text-xs">Code:</span>
+                    <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-200">{{ $supplier->supplier_code }}</span>
+                </div>
+                <div class="flex items-center text-slate-500">
+                    <span class="font-bold text-slate-400 mr-2 uppercase tracking-tighter text-xs">Email:</span>
+                    <span class="font-medium hover:text-red-600 transition-colors">{{ $supplier->contact_email }}</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-fit">
-            <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">Contact Details</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
-                    <p class="text-slate-700 font-medium break-all">{{ $supplier->contact_email }}</p>
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Phone Number</label>
-                    <p class="text-slate-700 font-medium">{{ $supplier->contact_number }}</p>
-                </div>
-                <div class="pt-4">
-                    <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-lg transition text-sm">
-                        Edit Supplier Info
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-extrabold text-slate-900 tracking-tight">Supply History</h3>
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white border border-slate-200 px-3 py-1 rounded-full">Items Delivered</span>
+    </div>
 
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-slate-800">Supply History</h3>
-            </div>
-            <table class="w-full text-left">
-                <thead class="bg-slate-50 border-b border-slate-200">
-                    <tr>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase">Product Name</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase text-center">Qty Delivered</th>
-                        <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase text-right">Unit Price</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    @forelse($supplier->products as $product)
-                    <tr>
-                        <td class="px-6 py-4">
-                            <a href="{{ route('products.show', $product->id) }}" class="text-indigo-600 font-semibold hover:underline">
-                                {{ $product->product_name }}
-                            </a>
-                            <p class="text-xs text-slate-400">{{ $product->product_code }}</p>
-                        </td>
-                        <td class="px-6 py-4 text-center font-bold text-slate-700">
-                            {{ $product->pivot->quantity }}
-                        </td>
-                        <td class="px-6 py-4 text-right text-slate-600">
-                            ₱{{ number_format($product->price, 2) }}
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" class="px-6 py-12 text-center">
-                            <div class="flex flex-col items-center">
-                                <span class="text-slate-300 mb-2 font-medium">No products supplied yet.</span>
-                                <a href="{{ route('stock.index') }}" class="text-indigo-600 text-sm font-bold hover:underline">Add first delivery &rarr;</a>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <div class="bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-2xl overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-900">
+                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Product Name</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Quantity Delivered</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Reference Code</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                @forelse($supplier->products as $product)
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="px-6 py-4 font-bold text-slate-900 group-hover:text-red-600 transition-colors">
+                        {{ $product->product_name }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center text-sm font-black text-slate-900 bg-slate-50 px-4 py-1 rounded-lg border border-slate-200">
+                            +{{ $product->pivot->quantity }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="font-mono text-xs text-slate-400 font-bold tracking-tighter uppercase">
+                            {{ $product->pivot->delivery_reference }}
+                        </span>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="px-6 py-20 text-center">
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">No products supplied by this vendor yet.</p>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
